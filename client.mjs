@@ -1,27 +1,34 @@
-var allButtons = []
+var allButtons = [];
 
 var moveCounter = 0;
 var cheesesFound;
 var noOfCheeses;
 var gameHour;
 
-let hostAddress = "https://cheesefinder.azurewebsites.net/";
+let hostAddress =
+  "https://azure-demo-cheese-finder-fje0gmf5b0egaddh.canadacentral-01.azurewebsites.net/";
 
 let startUrl = hostAddress + "getstart.json";
 let getStyleUrl = hostAddress + "getstyle.json";
 
 function getFromServer(url, handler) {
-  fetch(url).then(response => {
-    response.text().then(result => {
-      handler(result);
-    }).catch(error => alert("Bad text: " + error));
-  }).catch(error => alert("Bad fetch: " + error));
+  fetch(url)
+    .then((response) => {
+      response
+        .text()
+        .then((result) => {
+          handler(result);
+        })
+        .catch((error) => alert("Bad text: " + error));
+    })
+    .catch((error) => alert("Bad fetch: " + error));
 }
 
 function showCounters() {
   let counterPar = document.getElementById("counterPar");
   let cheesesLeft = noOfCheeses - cheesesFound;
-  counterPar.textContent = "Cheeses left:" + cheesesLeft + " Tries: " + moveCounter;
+  counterPar.textContent =
+    "Cheeses left:" + cheesesLeft + " Tries: " + moveCounter;
 }
 
 function fillGrid(buttons) {
@@ -36,9 +43,9 @@ function setButtonStyle(button) {
   let x = button.getAttribute("x");
   let y = button.getAttribute("y");
   let checkUrl = getStyleUrl + "?x=" + x + "&y=" + y;
-  getFromServer(checkUrl, result => {
+  getFromServer(checkUrl, (result) => {
     let checkDetails = JSON.parse(result);
-    if(checkDetails.hour != gameHour){
+    if (checkDetails.hour != gameHour) {
       // we have reached the end of the hour
       // end the game
       alert("The game in this hour has ended.");
@@ -68,7 +75,6 @@ function buttonClickedHandler(event) {
 }
 
 function setupGame(gameDetailsJSON) {
-
   let gameDetails = JSON.parse(gameDetailsJSON);
 
   noOfCheeses = gameDetails.noOfCheeses;
